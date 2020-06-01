@@ -1,0 +1,21 @@
+---
+- name: AWS service creating
+  hosts: "{{ srv_group }}"
+  remote_user: "{{  ssh_user }}"
+  gather_facts: true
+
+  # vars_prompt:
+  #   - name: vpc_id
+  #     prompt: "VPC id for deleting"
+  #     private: no
+  #     secure: no
+  #   - name: vpc_region
+  #     prompt: "VPC region for deleting"
+  #     private: no
+  #     secure: no
+
+
+  roles:
+    # - role: vpc
+    # - role: ec2
+    - role: s3

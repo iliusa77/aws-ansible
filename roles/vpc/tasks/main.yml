@@ -1,0 +1,45 @@
+
+- name: VPC creating
+  ec2_vpc_net:
+    name: "{{ vpc_name }}"
+    region: "{{ vpc_region }}"
+    cidr_block: "{{ vpc_cidr_block }}"
+    resource_tags: { "Environment":"Development" }
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    state: present
+  register: vpc
+  tags: create_vpc
+
+- debug:
+    msg: 
+      - "VPC info:"
+      - "{{ vpc }}"
+
+# - name: VPC deleting
+#   ec2_vpc_net:
+#     name: "{{ vpc_name }}"
+#     region: "{{ vpc_region }}"
+#     cidr_block: "{{ vpc_cidr_block }}"
+#     aws_access_key: "{{ aws_access_key }}"
+#     aws_secret_key: "{{ aws_secret_key }}"   
+#     state: absent
+#   tags: delete_vpc
+
+- name: Create subnet for EC2 servers
+  ec2_vpc_subnet:
+    state: present
+    vpc_id: "{{ vpc_id }}"
+    region: "{{ vpc_region }}"
+    cidr: "{{ ec2_vpc_subnet_cidr }}"
+    tags:
+      Name: "subnet" 
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+  register: subnet
+  tags: create_subnet
+
+- debug:
+    msg: 
+      - "Subnet info:"
+      - "{{ subnet }}"
